@@ -1,0 +1,18 @@
+# Environment variables
+.env
+
+# Database files
+todosapp.db
+
+# Python cache
+__pycache__/
+
+# Virtual environment
+.venv/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
