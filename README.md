@@ -21,17 +21,28 @@ A simple Todo application built with FastAPI featuring user authentication and t
    source .venv/bin/activate  # On macOS/Linux
    ```
 
-2. **Install dependencies:**
+2. **Create environment file:**
+   Create a `.env` file in the root directory with the following constants:
+   ```env
+   SECRET_KEY=your_secret_key_here
+   ACCESS_TOKEN_EXPIRE_MINUTES=30
+   ```
+   > **Note:** Replace `your_secret_key_here` with a secure secret key. You can generate one using:
+   > ```bash
+   > openssl rand -hex 32
+   > ```
+
+3. **Install dependencies:**
    ```bash
    pip install fastapi uvicorn sqlalchemy bcrypt python-jose python-multipart
    ```
 
-3. **Run the application:**
+4. **Run the application:**
    ```bash
    uvicorn main:app --reload
    ```
 
-4. **Access the app:**
+5. **Access the app:**
    - API: http://localhost:8000
    - Docs: http://localhost:8000/docs
 
