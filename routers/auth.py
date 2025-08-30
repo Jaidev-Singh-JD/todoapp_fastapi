@@ -38,11 +38,11 @@ class CreateUserRequest(BaseModel):  # baseModel return what kind of type should
         "extra": "forbid",  # Prevents unexpected fields in request
         "json_schema_extra": {
             "example": {
-                "email": "john.doe@example.com",
-                "username": "johndoe",
-                "first_name": "John",
-                "last_name": "Doe",
-                "password": "StrongPass@2025",
+                "email": "exam@example.com",
+                "username": "example",
+                "first_name": "example",
+                "last_name": "one",
+                "password": "exam123",
                 "role": "user",
             }
         },
@@ -54,8 +54,8 @@ class Token(BaseModel):
     token_type: str
 
 
-def create_access_token(username: str, user_id: int, expires_delta: timedelta):
-    PAYLOAD = {"sub": username, "id": user_id}
+def create_access_token(username: str, user_id: int, user_role:str, expires_delta: timedelta):
+    PAYLOAD = {"sub": username, "id": user_id, "role":user_role}
     expires = datetime.now(timezone.utc) + expires_delta
     PAYLOAD.update({"exp": expires})
     token = jwt.encode(HEADER, PAYLOAD, SECRET_KEY)
@@ -67,12 +67,13 @@ async def get_current_user(token: Annotated[str, Depends(oauth_bearer)]):
         payload = jwt.decode(token, SECRET_KEY)
         username: str = payload.get("sub")
         user_id: int = payload.get("id")
+        user_role:str = payload.get("role")
         if username is None or user_id is None:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Could not validate user",
             )
-        return {"username": username, "id": user_id}
+        return {"username": username, "id": user_id, "userrole":user_role}
     except JoseError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate user"
@@ -115,7 +116,7 @@ async def login_for_access_token(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate user"
         )
     token = create_access_token(
-        user.username, user.id, timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        user.username, user.id, user.role, timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     )
 
     return {"access_token": token, "token_type": "bearer"}
