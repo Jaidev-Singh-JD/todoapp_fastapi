@@ -12,7 +12,7 @@ from passlib.context import CryptContext
 # Create router for user-related endpoints with /user prefix
 router=APIRouter(
     prefix="/user",
-    tags=["user"]
+    tags=["user current details"]
 )
 
 # Pydantic model for password verification and update requests
@@ -29,16 +29,16 @@ bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")  # Password
 async def get_user(user:user_dependency, db:db_dependency):
     # Check if user is authenticated and has admin role
     if user is None or user.get('userrole') != 'admin':
-        raise HTTPException(status_code=401, detail="Authentication Failed")
+        raise HTTPException(status_code=401, detail="Authentication Failed: You have to be Admin")
     
     # Query database to get user details by ID
     return db.query(Users).filter(Users.id == user.get('id')).first()
 
-@router.put("/user/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.put("/password", status_code=status.HTTP_204_NO_CONTENT)
 async def change_password(user:user_dependency, db:db_dependency, user_verification:UserVerfication):
     # Ensure user is authenticated and has admin privileges
     if user is None or user.get('userrole') != 'admin':
-        raise HTTPException(status_code=401, detail="Authentication Failed")
+        raise HTTPException(status_code=401, detail="Authentication Failed: You have to be Admin")
     
     # Get the user record from database
     user_model = db.query(Users).filter(Users.id == user.get('id')).first()

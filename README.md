@@ -49,7 +49,7 @@ A simple Todo application built with FastAPI featuring user authentication and t
 ## API Endpoints
 
 ### Authentication
-- `POST /auth/create/user` - Register new user
+- `POST /auth/` - Register new user
 - `POST /auth/token` - Login
 
 ### Todos
@@ -58,11 +58,16 @@ A simple Todo application built with FastAPI featuring user authentication and t
 - `PUT /todos/{id}` - Update todo
 - `DELETE /todos/{id}` - Delete todo
 
+### User Management
+- `GET /user/` - Get current user details (admin only)
+- `PUT /user/password` - Change password (admin only)
+
 ## Tech Stack
 
 - FastAPI
-- SQLite + SQLAlchemy
+- SQLite + SQLAlchemy (with PostgreSQL option available)
 - JWT Authentication
+- Alembic for database migrations
 
 ---
-*Created: August 2025*
+*Created: September 2025*
