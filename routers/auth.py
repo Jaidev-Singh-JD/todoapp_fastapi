@@ -33,6 +33,7 @@ class CreateUserRequest(BaseModel):  # baseModel return what kind of type should
     last_name: str
     password: str
     role: str
+    phone_number: str
 
     model_config = {
         "extra": "forbid",  # Prevents unexpected fields in request
@@ -44,6 +45,7 @@ class CreateUserRequest(BaseModel):  # baseModel return what kind of type should
                 "last_name": "one",
                 "password": "exam123",
                 "role": "user",
+                "phone_number": "1234567890"
             }
         },
     }
@@ -99,6 +101,7 @@ async def create_user(db: db_dependency, create_user_request: CreateUserRequest)
         hashed_password=bcrypt_context.hash(create_user_request.password),
         is_active=True,
         role=create_user_request.role,
+        phone_number=create_user_request.phone_number
     )
 
     db.add(create_user_model)

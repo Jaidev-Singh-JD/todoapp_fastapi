@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, Path
-from fastapi.params import Depends
+from fastapi.params import Body, Depends
 from pydantic import BaseModel, Field
 from starlette import status
 from typing import Annotated
@@ -19,6 +19,10 @@ router=APIRouter(
 class UserVerfication(BaseModel):
     password:str  # Current password for verification
     new_password:str = Field(min_length=6)  # New password (minimum 6 characters)
+
+# Pydantic model for updating phone number
+class UserPhoneNumber(BaseModel):
+    phone_number:str = Field(min_length=10, max_length=10)
     
 # Type annotations for dependency injection
 user_dependency = Annotated[dict, Depends(get_current_user)]  # Gets current authenticated user
@@ -55,5 +59,19 @@ async def change_password(user:user_dependency, db:db_dependency, user_verificat
     
     # Update user's password in database
     user_model.hashed_password = hashed_new_password
+    db.add(user_model)  # Mark the object as modified
+    db.commit()  # Commit changes to database
+
+@router.put("/phone_number", status_code=status.HTTP_204_NO_CONTENT)
+async def change_phone_number(user:user_dependency, db:db_dependency, phone_number:UserPhoneNumber):
+    # Ensure user is authenticated and has admin privileges
+    if user is None or user.get('userrole') != 'admin':
+        raise HTTPException(status_code=401, detail="Authentication Failed: You have to be Admin")
+    
+    # Get the user record from database
+    user_model = db.query(Users).filter(Users.id == user.get('id')).first()
+    
+    # Update user's phone number in database
+    user_model.phone_number = phone_number.phone_number
     db.add(user_model)  # Mark the object as modified
     db.commit()  # Commit changes to database
