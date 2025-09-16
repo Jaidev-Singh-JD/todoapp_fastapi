@@ -75,7 +75,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth_bearer)]):
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Could not validate user",
             )
-        return {"username": username, "id": user_id, "userrole":user_role}
+        return {"username": username, "id": user_id, "role":user_role}
     except JoseError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate user"

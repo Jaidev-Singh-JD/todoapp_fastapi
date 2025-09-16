@@ -35,6 +35,8 @@ A simple Todo application built with FastAPI featuring user authentication and t
 3. **Install dependencies:**
    ```bash
    pip install fastapi uvicorn sqlalchemy bcrypt python-jose python-multipart
+   # For running tests and development tooling, also install:
+   pip install pytest
    ```
 
 4. **Run the application:**
