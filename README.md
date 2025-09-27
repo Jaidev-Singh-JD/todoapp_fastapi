@@ -34,17 +34,40 @@ A simple Todo application built with FastAPI featuring user authentication and t
 
 3. **Install dependencies:**
    ```bash
-   pip install fastapi uvicorn sqlalchemy bcrypt python-jose python-multipart
-   # For running tests and development tooling, also install:
-   pip install pytest
+   # Install all dependencies from requirements.txt
+   pip install -r requirements.txt
    ```
+   
+   > **Alternative manual installation:**
+   > ```bash
+   > # Core dependencies
+   > pip install fastapi uvicorn sqlalchemy bcrypt python-jose python-multipart alembic
+   > 
+   > # Development dependencies (optional but recommended)
+   > pip install pytest
+   > ```
 
-4. **Run the application:**
+4. **Initialize database (first time only):**
+   ```bash
+   # Option 1: Use Alembic migrations (recommended for production)
+   alembic upgrade head
+   
+   # Option 2: Auto-creation (happens automatically when you run the app)
+   # The app will create basic tables automatically, but won't include
+   # schema changes from migrations like the phone_number column
+   ```
+   
+   > **Note**: This app has both auto-creation and migration support:
+   > - **Auto-creation**: Basic tables are created when the app starts
+   > - **Migrations**: Include additional schema changes (like phone_number column)
+   > - **For complete schema**: Run the migration command above
+
+5. **Run the application:**
    ```bash
    uvicorn main:app --reload
    ```
 
-5. **Access the app:**
+6. **Access the app:**
    - API: http://localhost:8000
    - Docs: http://localhost:8000/docs
 
@@ -63,6 +86,57 @@ A simple Todo application built with FastAPI featuring user authentication and t
 ### User Management
 - `GET /user/` - Get current user details (admin only)
 - `PUT /user/password` - Change password (admin only)
+
+## Development
+
+### Running Tests
+The project includes a test suite using pytest:
+
+```bash
+# Run all tests
+pytest
+
+# Run tests with verbose output
+pytest -v
+
+# Run specific test file
+pytest test/test_example.py
+```
+
+### Database Migrations
+This project uses Alembic for database schema management:
+
+```bash
+# Create a new migration
+alembic revision --autogenerate -m "Description of changes"
+
+# Apply migrations
+alembic upgrade head
+
+# Check current migration status
+alembic current
+
+# View migration history
+alembic history
+```
+
+### Project Structure
+```
+TodoApp/
+├── main.py              # FastAPI application entry point
+├── models.py            # SQLAlchemy database models
+├── database.py          # Database configuration
+├── requirements.txt     # Python dependencies
+├── routers/             # API route handlers
+│   ├── auth.py         # Authentication routes
+│   ├── todo.py         # Todo CRUD routes
+│   ├── users.py        # User management routes
+│   └── admin.py        # Admin-only routes
+├── test/               # Test suite
+│   └── test_example.py # Example test cases
+├── alembic/            # Database migration files
+└── .env               # Environment variables (create manually)
+```
 
 ## Tech Stack
 
