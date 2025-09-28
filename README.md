@@ -2,6 +2,8 @@
 
 > ⚠️ **Under Development** - This project is currently in development and may undergo changes.
 
+> 📚 **Learning Project** - This project uses Python package structure with relative imports to demonstrate package organization and module resolution. The application must be run from the parent directory using module syntax (`uvicorn todoapp-fastapi.main:app --reload`) to properly handle the relative imports between modules.
+
 A simple Todo application built with FastAPI featuring user authentication and task management.
 
 ## Features
@@ -16,10 +18,12 @@ A simple Todo application built with FastAPI featuring user authentication and t
 1. **Clone and setup:**
    ```bash
    git clone https://github.com/Jaidev-Singh-JD/todoapp-fastapi.git
-   cd TodoApp
+   cd todoapp-fastapi  # Navigate into the project directory
    python -m venv .venv
    source .venv/bin/activate  # On macOS/Linux
    ```
+   
+   > **Important**: This project uses relative imports between modules. You'll need to run the application from the parent directory (one level up) to ensure proper module resolution.
 
 2. **Create environment file:**
    Create a `.env` file in the root directory with the following constants:
@@ -64,7 +68,9 @@ A simple Todo application built with FastAPI featuring user authentication and t
 
 5. **Run the application:**
    ```bash
-   uvicorn main:app --reload
+   # From the parent directory (one level up from todoapp-fastapi/)
+   cd ..
+   uvicorn todoapp_fastapi.main:app --reload
    ```
 
 6. **Access the app:**
@@ -122,20 +128,32 @@ alembic history
 
 ### Project Structure
 ```
-TodoApp/
+todoapp-fastapi/
+├── __init__.py          # Package initialization
 ├── main.py              # FastAPI application entry point
 ├── models.py            # SQLAlchemy database models
 ├── database.py          # Database configuration
 ├── requirements.txt     # Python dependencies
+├── alembic.ini          # Alembic configuration
+├── README.md            # Project documentation
+├── .env                 # Environment variables (create manually)
+├── .gitignore           # Git ignore rules
 ├── routers/             # API route handlers
+│   ├── __init__.py     # Router package initialization
 │   ├── auth.py         # Authentication routes
 │   ├── todo.py         # Todo CRUD routes
 │   ├── users.py        # User management routes
 │   └── admin.py        # Admin-only routes
 ├── test/               # Test suite
-│   └── test_example.py # Example test cases
-├── alembic/            # Database migration files
-└── .env               # Environment variables (create manually)
+│   ├── __init__.py     # Test package initialization
+│   ├── test_example.py # Example test cases
+│   └── test_main.py    # Main application tests
+└── alembic/            # Database migration files
+    ├── env.py          # Alembic environment configuration
+    ├── README          # Alembic documentation
+    ├── script.py.mako  # Migration template
+    └── versions/       # Migration version files
+        └── *.py        # Individual migration files
 ```
 
 ## Tech Stack

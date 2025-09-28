@@ -32,7 +32,7 @@ bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")  # Password
 @router.get("/", status_code=status.HTTP_200_OK)
 async def get_user(user:user_dependency, db:db_dependency):
     # Check if user is authenticated and has admin role
-    if user is None or user.get('userrole') != 'admin':
+    if user is None or user.get('role') != 'admin':
         raise HTTPException(status_code=401, detail="Authentication Failed: You have to be Admin")
     
     # Query database to get user details by ID
@@ -41,7 +41,7 @@ async def get_user(user:user_dependency, db:db_dependency):
 @router.put("/password", status_code=status.HTTP_204_NO_CONTENT)
 async def change_password(user:user_dependency, db:db_dependency, user_verification:UserVerfication):
     # Ensure user is authenticated and has admin privileges
-    if user is None or user.get('userrole') != 'admin':
+    if user is None or user.get('role') != 'admin':
         raise HTTPException(status_code=401, detail="Authentication Failed: You have to be Admin")
     
     # Get the user record from database
@@ -65,7 +65,7 @@ async def change_password(user:user_dependency, db:db_dependency, user_verificat
 @router.put("/phone_number", status_code=status.HTTP_204_NO_CONTENT)
 async def change_phone_number(user:user_dependency, db:db_dependency, phone_number:UserPhoneNumber):
     # Ensure user is authenticated and has admin privileges
-    if user is None or user.get('userrole') != 'admin':
+    if user is None or user.get('role') != 'admin':
         raise HTTPException(status_code=401, detail="Authentication Failed: You have to be Admin")
     
     # Get the user record from database
