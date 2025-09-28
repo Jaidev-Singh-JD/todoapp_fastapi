@@ -3,10 +3,10 @@ from fastapi.params import Body, Depends
 from pydantic import BaseModel, Field
 from starlette import status
 from typing import Annotated
-from database import get_db
+from ..database import get_db
 from .auth import get_current_user
 from sqlalchemy.orm import Session
-from models import Users
+from ..models import Users
 from passlib.context import CryptContext
 
 # Create router for user-related endpoints with /user prefix

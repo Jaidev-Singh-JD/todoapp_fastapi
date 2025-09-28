@@ -2,10 +2,10 @@ from fastapi import APIRouter, HTTPException, Path
 from fastapi.params import Depends
 from starlette import status
 from typing import Annotated
-from database import get_db
+from ..database import get_db
 from .auth import get_current_user
 from sqlalchemy.orm import Session
-from models import Todos
+from ..models import Todos
 
 router=APIRouter(
     prefix="/admin",
