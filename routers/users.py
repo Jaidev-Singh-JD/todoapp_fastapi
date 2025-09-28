@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, Path
-from fastapi.params import Body, Depends
+from fastapi.params import Depends
 from pydantic import BaseModel, Field
 from starlette import status
 from typing import Annotated
