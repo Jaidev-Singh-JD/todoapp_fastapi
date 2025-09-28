@@ -1,9 +1,9 @@
 from typing import Annotated
 from fastapi import Depends, APIRouter, HTTPException, Path
-from models import Todos
+from ..models import Todos
 from pydantic import BaseModel, Field
 from starlette import status
-from database import get_db
+from ..database import get_db
 from sqlalchemy.orm import Session
 from .auth import get_current_user
 

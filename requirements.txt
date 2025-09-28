@@ -2,10 +2,14 @@
 fastapi>=0.104.0
 uvicorn[standard]>=0.24.0
 sqlalchemy>=2.0.0
-bcrypt>=4.0.0
+# Pin bcrypt to 4.x to avoid compatibility issues with passlib
+# bcrypt 5.x introduced breaking changes that cause password hashing errors
+bcrypt>=4.0.0,<5.0.0
 python-jose[cryptography]>=3.3.0
 python-multipart>=0.0.6
 alembic>=1.12.0
+authlib>=1.2.0
+passlib[bcrypt]>=1.7.4
 
 # Development dependencies (optional)
 pytest>=7.4.0
