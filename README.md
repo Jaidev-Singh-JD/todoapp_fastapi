@@ -32,6 +32,7 @@ A simple Todo application built with FastAPI featuring user authentication and t
    ACCESS_TOKEN_EXPIRE_MINUTES=30
    ```
    > **Note:** Replace `your_secret_key_here` with a secure secret key. You can generate one using:
+   > 
    MAC
    > ```bash
    > openssl rand -hex 32
